@@ -16,6 +16,11 @@
 #define MOTOR_DIR1 17
 #define MOTOR_DIR2 18
 #define MOTOR_POT 23
+#define SENSOR_HALL_MOTOR 11
+#define SENSOR_HALL_RODA_A 5
+#define SENSOR_HALL_RODA_B 6
+#define CC_RES 13
+#define CC_CANCEL 0
 
 // Declaração da função de setup
 void setup_gpio();

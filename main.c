@@ -12,6 +12,14 @@ int running = 1;
 void handle_sigint(int sig) {
     running = 0;
     printf("\nEncerrando o programa...\n");
+    // Desligar atuadores
+    pwmWrite(MOTOR_POT, 0);
+    digitalWrite(LUZ_FREIO, LOW);
+    digitalWrite(FAROL_BAIXO, LOW);
+    digitalWrite(FAROL_ALTO, LOW);
+    digitalWrite(SETA_ESQUERDA, LOW);
+    digitalWrite(SETA_DIREITA, LOW);
+    exit(0);
 }
 
 int main() {
@@ -21,6 +29,7 @@ int main() {
 
     while (running) {
         controle_motor();         // Gerenciar motor
+        controle_cruise_control();
         controle_farol();         // Gerenciar faróis
         controle_setas();         // Gerenciar setas
         delay(100);               // Reduzir uso da CPU

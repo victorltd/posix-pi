@@ -16,6 +16,11 @@
 #define MOTOR_DIR1 17
 #define MOTOR_DIR2 18
 #define MOTOR_POT 23
+#define SENSOR_HALL_MOTOR 24
+#define SENSOR_HALL_RODA_A 5
+#define SENSOR_HALL_RODA_B 6
+#define CC_RES 12
+#define CC_CANCEL 13
 
 void setup_gpio() {
     wiringPiSetupGpio();
@@ -33,4 +38,9 @@ void setup_gpio() {
     pinMode(MOTOR_DIR1, OUTPUT);
     pinMode(MOTOR_DIR2, OUTPUT);
     pinMode(MOTOR_POT, PWM_OUTPUT);
+    pinMode(SENSOR_HALL_MOTOR, INPUT);
+    pinMode(SENSOR_HALL_RODA_A, INPUT);
+    pinMode(SENSOR_HALL_RODA_B, INPUT);
+    pinMode(CC_RES, INPUT);
+    pinMode(CC_CANCEL, INPUT);
 }
