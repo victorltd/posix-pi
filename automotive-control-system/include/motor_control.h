@@ -2,9 +2,9 @@
 #define MOTOR_CONTROL_H
 
 // Motor direction constants
-#define MOTOR_FORWARD 1
-#define MOTOR_REVERSE 2
-#define MOTOR_STOP 0
+#define MOTOR_DIR_FORWARD 1
+#define MOTOR_DIR_REVERSE 0
+#define MOTOR_DIR_STOP 2
 
 // Function prototypes
 void set_motor_direction(int direction);

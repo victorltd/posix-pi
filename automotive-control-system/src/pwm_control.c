@@ -1,40 +1,32 @@
-#include <wiringPi.h>
 #include "pwm_control.h"
+#include <wiringPi.h>
 
-#define MOTOR_PWM_PIN 23
-#define BRAKE_PWM_PIN 24
-#define PWM_FREQUENCY 1000
+#define PWM_FREQUENCY 1000 // 1 kHz
+#define PWM_RANGE 100 // 0 to 100%
 
-void setupPWM() {
-    pinMode(MOTOR_PWM_PIN, PWM_OUTPUT);
-    pinMode(BRAKE_PWM_PIN, PWM_OUTPUT);
-    pwmSetMode(PWM_MODE_MS);
-    pwmSetRange(1024);
-    pwmSetClock(192); // Set clock for 1 kHz frequency
+void pwm_init() {
+    wiringPiSetupGpio(); // Initialize wiringPi using GPIO numbering
+    pinMode(Motor_POT, PWM_OUTPUT); // Set motor PWM pin as output
+    pinMode(Freio_INT, PWM_OUTPUT); // Set brake PWM pin as output
+    pwmSetMode(PWM_MODE_MS); // Set PWM mode to mark-space
+    pwmSetRange(PWM_RANGE); // Set the range for PWM
+    pwmSetClock(PWM_FREQUENCY); // Set the PWM frequency
 }
 
-void setMotorSpeed(int speed) {
-    if (speed < 0) {
-        speed = 0;
-    } else if (speed > 100) {
-        speed = 100;
+void set_motor_pwm(int duty_cycle) {
+    if (duty_cycle < 0) {
+        duty_cycle = 0; // Ensure duty cycle is not negative
+    } else if (duty_cycle > PWM_RANGE) {
+        duty_cycle = PWM_RANGE; // Ensure duty cycle does not exceed range
     }
-    pwmWrite(MOTOR_PWM_PIN, speed * 10.24); // Scale speed to PWM range
+    pwmWrite(Motor_POT, duty_cycle); // Set the PWM duty cycle for the motor
 }
 
-void setBrakeIntensity(int intensity) {
-    if (intensity < 0) {
-        intensity = 0;
-    } else if (intensity > 100) {
-        intensity = 100;
+void set_brake_pwm(int duty_cycle) {
+    if (duty_cycle < 0) {
+        duty_cycle = 0; // Ensure duty cycle is not negative
+    } else if (duty_cycle > PWM_RANGE) {
+        duty_cycle = PWM_RANGE; // Ensure duty cycle does not exceed range
     }
-    pwmWrite(BRAKE_PWM_PIN, intensity * 10.24); // Scale intensity to PWM range
-}
-
-void stopMotor() {
-    pwmWrite(MOTOR_PWM_PIN, 0);
-}
-
-void releaseBrake() {
-    pwmWrite(BRAKE_PWM_PIN, 0);
+    pwmWrite(Freio_INT, duty_cycle); // Set the PWM duty cycle for the brake
 }

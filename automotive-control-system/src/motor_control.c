@@ -1,28 +1,35 @@
 #include "motor_control.h"
 #include "pwm_control.h"
+#include <wiringPi.h>
 
-void motor_start() {
-    // Set direction to forward
-    gpio_set_direction(Motor_DIR1, 1);
-    gpio_set_direction(Motor_DIR2, 0);
-    // Start the motor with initial speed
-    pwm_set_motor_speed(0);
+#define MOTOR_DIR1_PIN 17
+#define MOTOR_DIR2_PIN 18
+#define MOTOR_PWM_PIN 23
+
+void motor_init() {
+    pinMode(MOTOR_DIR1_PIN, OUTPUT);
+    pinMode(MOTOR_DIR2_PIN, OUTPUT);
+    pinMode(MOTOR_PWM_PIN, PWM_OUTPUT);
 }
 
-void motor_stop() {
-    // Stop the motor
-    gpio_set_direction(Motor_DIR1, 0);
-    gpio_set_direction(Motor_DIR2, 0);
-    pwm_set_motor_speed(0);
+void set_motor_direction(int direction) {
+    if (direction == 1) { // Forward
+        digitalWrite(MOTOR_DIR1_PIN, HIGH);
+        digitalWrite(MOTOR_DIR2_PIN, LOW);
+    } else if (direction == -1) { // Reverse
+        digitalWrite(MOTOR_DIR1_PIN, LOW);
+        digitalWrite(MOTOR_DIR2_PIN, HIGH);
+    } else { // Stop
+        digitalWrite(MOTOR_DIR1_PIN, LOW);
+        digitalWrite(MOTOR_DIR2_PIN, LOW);
+    }
 }
 
-void motor_set_speed(int speed) {
-    // Ensure speed is within valid range
+void set_motor_speed(int speed) {
     if (speed < 0) {
         speed = 0;
     } else if (speed > 100) {
         speed = 100;
     }
-    // Set the motor speed using PWM
-    pwm_set_motor_speed(speed);
+    pwmWrite(MOTOR_PWM_PIN, speed * 10); // Assuming PWM range is 0-1023
 }
